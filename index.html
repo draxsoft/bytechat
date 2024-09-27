@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>bytechat</title>
+    <style>
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+        }
+
+        body {
+          font-family: 'Helvetica', sans-serif;
+          background-color: #151515;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 100vh;
+          width: 100vw;
+          color: #fff;
+          overflow: hidden;
+        }
+
+        .chat-container {
+          width: 100vw;
+          height: 100vh;
+          display: flex;
+          flex-direction: column;
+          background-color: #151515;
+          border-radius: 0;
+          box-shadow: none;
+          overflow: hidden;
+        }
+
+        .chat-header {
+          background-color: #151515;
+          padding: 15px;
+          text-align: center;
+          font-size: 20px;
+          color: #fff;
+        }
+
+        .chat-box {
+          flex: 1;
+          padding: 20px;
+          overflow-y: auto;
+          background-color: #151515;
+        }
+
+        .message {
+          margin-bottom: 15px;
+          display: flex;
+          align-items: center;
+        }
+
+        .message .avatar {
+          width: 35px;
+          height: 35px;
+          border-radius: 50%;
+          margin-right: 10px;
+        }
+
+        .message .bubble {
+          max-width: 70%;
+          padding: 10px;
+          border-radius: 15px;
+          font-size: 14px;
+          line-height: 1.4;
+          position: relative;
+        }
+
+        .message.sent .bubble {
+          background-color: #252525;
+          color: #fff;
+          margin-left: auto;
+          text-align: left;
+        }
+
+        .message.received .bubble {
+          background-color: #252525;
+          color: #fff;
+        }
+
+        .chat-input {
+          display: flex;
+          background-color: #151515;
+          padding: 15px;
+          align-items: center;
+        }
+
+        .chat-input input {
+          flex: 1;
+          padding: 10px;
+          border: none;
+          outline: none;
+          border-radius: 30px;
+          background-color: #252525;
+          font-size: 16px;
+          margin-right: 10px;
+          color: #fff;
+        }
+
+        .chat-input button {
+          background-color: transparent;
+          border: none;
+          cursor: pointer;
+        }
+
+        .chat-input button svg {
+          width: 24px;
+          height: 24px;
+          stroke: #fff;
+          transition: stroke 0.2s ease;
+        }
+
+        .chat-input button:hover svg {
+          stroke: #6a5acd;
+        }
+    </style>
+</head>
+<body>
+
+  <div class="chat-container">
+      <div class="chat-header">
+          bytechat
+      </div>
+      <div id="chat-box" class="chat-box">
+          <!-- Chat messages will be dynamically added here -->
+      </div>
+      <div class="chat-input">
+          <input type="text" id="message-input" placeholder="Send a message...">
+          <button id="send-button">
+              <!-- Send Button SVG Icon -->
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" />
+              </svg>
+          </button>
+      </div>
+  </div>
+
+  <script>
+      const messageInput = document.getElementById('message-input');
+      const chatBox = document.getElementById('chat-box');
+      const sendButton = document.getElementById('send-button');
+
+      // Single avatar for all users
+      const avatar = 'assets/avatar.png'; // Placeholder avatar
+
+      // Send button or Enter key event listener
+      sendButton.addEventListener('click', sendMessage);
+      messageInput.addEventListener('keypress', function(event) {
+          if (event.key === 'Enter') {
+              sendMessage();
+          }
+      });
+
+      // Function to send a message
+      function sendMessage() {
+          const messageText = messageInput.value.trim();
+          if (messageText === '') return;
+
+          // Add the message to the chat
+          addMessage(messageText, avatar);
+
+          // Clear input field and scroll to bottom
+          messageInput.value = '';  
+          chatBox.scrollTop = chatBox.scrollHeight;
+      }
+
+      // Function to create and add a message to the chatbox
+      function addMessage(text, avatar) {
+          const message = document.createElement('div');
+          message.classList.add('message', 'received');
+
+          // Add avatar
+          const avatarImg = document.createElement('img');
+          avatarImg.classList.add('avatar');
+          avatarImg.src = avatar;
+
+          // Add message bubble
+          const bubble = document.createElement('div');
+          bubble.classList.add('bubble');
+          bubble.textContent = text;
+
+          // Append elements to the message
+          message.appendChild(avatarImg);
+          message.appendChild(bubble);
+
+          // Append message to the chat box
+          chatBox.appendChild(message);
+      }
+  </script>
+
+</body>
+</html>
